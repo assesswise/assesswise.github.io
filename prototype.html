@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AssessWise Prototype</title>
+<style>
+:root{--navy:#12355B;--teal:#0F8B8D;--amber:#F2A541;--ink:#1B2733;--muted:#53636f;--bg:#F3F6FA;--card:#fff;--line:#D5DEE8;--soft:#E3F1F1;--soft2:#FDF1DD;--red:#8E2318;--redbg:#FDE7E7}
+*{box-sizing:border-box}
+body{margin:0;font:18px/1.5 Calibri,"Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--bg)}
+header{background:var(--navy);color:#fff;padding:14px 20px;display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;justify-content:space-between}
+header h1{margin:0;font-size:28px}
+header small{color:#CFE3F5;font-size:15px}
+.badge{background:var(--redbg);color:var(--red);border:1px solid var(--red);padding:6px 12px;border-radius:8px;font-weight:700;font-size:14px}
+nav{display:flex;flex-wrap:wrap;gap:6px;padding:12px 20px;background:#fff;border-bottom:1px solid var(--line)}
+nav button{font:inherit;font-size:15px;padding:8px 12px;border:1px solid var(--line);background:#fff;border-radius:999px;cursor:pointer;color:var(--ink)}
+nav button[aria-current=step]{background:var(--teal);color:#fff;border-color:var(--teal);font-weight:700}
+nav .sp{flex:1}
+nav .t[aria-current=step]{background:var(--amber);color:var(--navy);border-color:var(--amber)}
+main{max-width:980px;margin:0 auto;padding:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
+h2{margin:0 0 6px;color:var(--navy);font-size:26px}
+h3{margin:14px 0 6px;color:var(--navy);font-size:19px}
+p{margin:6px 0}
+.muted{color:var(--muted);font-size:15px}
+.task{background:var(--soft);border-radius:10px;padding:12px 14px}
+ul.crit{margin:8px 0;padding-left:22px}
+textarea,input[type=text]{width:100%;font:inherit;padding:10px;border:1.5px solid #9FB0C2;border-radius:8px;background:#fff;color:var(--ink)}
+textarea{min-height:90px;resize:vertical}
+button.p,button.s{font:inherit;font-weight:700;padding:10px 18px;border-radius:10px;cursor:pointer;border:2px solid var(--teal)}
+button.p{background:var(--teal);color:#fff}
+button.s{background:#fff;color:var(--teal)}
+button.d{font:inherit;padding:8px 14px;border-radius:10px;cursor:pointer;border:2px solid #B36B00;background:var(--soft2);color:#6b3f00;font-weight:700}
+button:focus-visible,textarea:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #1a73e8;outline-offset:2px}
+button:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;align-items:center}
+.msg{border-radius:12px;padding:12px 14px;margin:10px 0;max-width:92%}
+.ai{background:var(--soft);border:1px solid #A7D8D9}
+.me{background:#EEF2F8;border:1px solid var(--line);margin-left:auto}
+.who{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.fb{border:1.5px solid var(--teal);border-radius:12px;padding:12px 14px;background:#fff;margin:10px 0}
+.fb dt{font-weight:700;color:var(--navy);font-size:15px}
+.fb dd{margin:0 0 8px}
+.quote{background:var(--soft2);border-left:4px solid var(--amber);padding:6px 10px;border-radius:4px}
+.prelim{display:inline-block;background:var(--soft2);color:#6b3f00;font-size:13px;font-weight:700;padding:2px 8px;border-radius:6px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+td,th{overflow-wrap:anywhere}
+main{padding:20px 16px}
+@media(max-width:700px){.cols{grid-template-columns:1fr}body{font-size:17px}h2{font-size:22px}.card{padding:14px}th{width:auto!important}}
+.ver{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#F7F9FC}
+.ver b{color:var(--navy)}
+table{border-collapse:collapse;width:100%;font-size:16px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--navy);color:#fff}
+.hide{display:none}
+.ok{background:var(--soft);border:1px solid var(--teal);padding:10px 12px;border-radius:10px;margin-top:10px}
+details{margin-top:10px}
+summary{cursor:pointer;font-weight:700;color:var(--navy)}
+.ethics{background:#fff;border:1.5px solid var(--amber);border-radius:12px;padding:14px;margin:14px 0}
+.ethics li{margin:4px 0}
+label{display:block;margin:10px 0 4px;font-weight:700;color:var(--navy);font-size:16px}
+select{font:inherit;padding:8px;border:1.5px solid #9FB0C2;border-radius:8px;background:#fff}
+</style>
+</head>
+<body>
+<header>
+  <div><h1>AssessWise</h1><small>Hearing the student think: attempt, explain, discuss, revise, transfer</small></div>
+  <div class="badge" role="note">CONCEPT: clickable mock-up. The dialogue is pre-scripted. No AI is running. Fictional student.</div>
+</header>
+<nav id="nav" aria-label="Steps"></nav>
+<main id="main"></main>
+
+<script>
+const STEPS = ["1 First attempt","2 Explain","3 Dialogue","4 Revise","5 Transfer"];
+const S = {
+  step:0, view:"student",
+  draft:"After the move online, the group's average grade rose. So online learning is more effective.",
+  aiUsed:"No", aiNote:"", self:{claim:"",evid:"",alt:""},
+  explain:"", dlg:[], dlgStage:0, hintLevel:0, disagreeOpen:false, disagreements:[], resolved:false,
+  revised:"", why:"", transfer:"", mark:"", teacherNote:"", showEthics:false
+};
+const $ = s => document.querySelector(s);
+const esc = t => String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function nav(){
+  const n = $("#nav");
+  n.innerHTML = STEPS.map((t,i)=>`<button data-s="${i}" ${S.view==="student"&&S.step===i?'aria-current="step"':''}>${t}</button>`).join("")
+   + `<span class="sp"></span><button class="t" data-v="teacher" ${S.view==="teacher"?'aria-current="step"':''}>Teacher view</button>`
+   + `<button data-v="ethics">Ethics &amp; data</button>`;
+  n.querySelectorAll("button[data-s]").forEach(b=>b.onclick=()=>{S.view="student";S.step=+b.dataset.s;render()});
+  n.querySelector("[data-v=teacher]").onclick=()=>{S.view="teacher";render()};
+  n.querySelector("[data-v=ethics]").onclick=()=>{S.showEthics=!S.showEthics;render()};
+}
+function ethics(){
+  return `<div class="ethics" role="region" aria-label="Ethics and data"><h3 style="margin-top:0">Ethics and data, visible to everyone</h3><ul>
+  <li><b>Transparency:</b> every comment shows the criterion, the quoted fragment and the reason. AI comments are marked <span class="prelim">preliminary</span>.</li>
+  <li><b>Right to disagree:</b> any comment can be disputed and sent to the teacher.</li>
+  <li><b>Minimal data:</b> this demo uses an invented text. No names or student ID numbers. If text is sent to an external AI service, this screen would say so before sending.</li>
+  <li><b>No hidden surveillance:</b> no keystroke logging, camera or "authorship percentage". The AI-use declaration helps discuss rules; it is not proof of authorship.</li>
+  <li><b>Help is not penalised:</b> using hints does not lower the mark.</li>
+  <li><b>Accessibility:</b> full keyboard use, high contrast, no timers. Language form is assessed separately from content when the task says so.</li></ul></div>`;
+}
+function stepper(){ return ""; }
+
+function s0(){
+  return `<div class="card"><h2>Step 1: First attempt</h2>
+  <p class="muted">Task set by the teacher, with allowed AI use: "AI may explain terms and ask questions. It may not write or rewrite your text."</p>
+  <div class="task"><b>Task:</b> Evaluate the claim "Online learning raises achievement."<br><b>Criteria:</b>
+  <ul class="crit"><li>A. Clear claim</li><li>B. Conclusion is justified by the evidence</li><li>C. Considers an alternative explanation</li></ul></div>
+  <label for="draft">Your short draft (fictional example is pre-filled)</label>
+  <textarea id="draft">${esc(S.draft)}</textarea>
+  <label for="ai">Did you use AI for this draft?</label>
+  <select id="ai"><option ${S.aiUsed==="No"?"selected":""}>No</option><option ${S.aiUsed==="Yes, to explain terms"?"selected":""}>Yes, to explain terms</option><option ${S.aiUsed==="Yes, to generate text"?"selected":""}>Yes, to generate text</option></select>
+  <label for="ainote">Where / how (optional)</label><input type="text" id="ainote" value="${esc(S.aiNote)}">
+  <h3>Self-assessment before feedback</h3>
+  <p class="muted">Rate yourself first: where is your work strongest and weakest?</p>
+  ${["claim:A. Clear claim","evid:B. Justified conclusion","alt:C. Alternative explanation"].map(x=>{const[k,l]=x.split(":");return `<label for="sa_${k}">${l}</label><select id="sa_${k}"><option value="">choose...</option>${["Strong","Partly","Weak","Not sure"].map(o=>`<option ${S.self[k]===o?"selected":""}>${o}</option>`).join("")}</select>`}).join("")}
+  <div class="row"><button class="p" id="go0">Submit and continue</button></div></div>`;
+}
+function s1(){
+  return `<div class="card"><h2>Step 2: Explain a key choice</h2>
+  <p class="muted">AssessWise asks about one specific fragment of your own text.</p>
+  <dl class="fb"><span class="prelim">preliminary AI comment</span>
+  <dt>Criterion</dt><dd>B. Conclusion is justified by the evidence</dd>
+  <dt>Quote from your work</dt><dd class="quote">"After the move online, the group's average grade rose. So online learning is more effective."</dd>
+  <dt>Why this fragment</dt><dd>The text links a rise in the average grade to the teaching format.</dd>
+  <dt>Question for you</dt><dd>Why did you decide that the format caused the rise? Explain your reasoning in your own words.</dd></dl>
+  <label for="ex">Your explanation</label>
+  <textarea id="ex" placeholder="Because the grades went up after the change...">${esc(S.explain)}</textarea>
+  <div class="row"><button class="p" id="go1">Continue to dialogue</button></div></div>`;
+}
+const SCRIPT = [
+ {ai:"Thank you. Other things also changed at that time. Can you name another change that could have affected the average grade?", hint:"Hint: think about the exam, the group, the grading, or the period itself.", ex:"Worked parallel example (a different topic): a school sees test scores rise after a new canteen opens. Was it the food? Maybe the test was easier, or a stronger cohort arrived. Now return to your own claim."},
+ {ai:"Good: the exam may have changed. How could you check that explanation? What data would you need?", hint:"Hint: compare the old and new exam questions, or compare groups taking the same exam.", ex:"Worked parallel example: to test whether a new test was easier, compare how a group that did not change formats performed on both tests."},
+ {ai:"That is a clear plan to test your own explanation. You can now revise your conclusion in step 4. You can also dispute any comment above if you think it is wrong.", hint:"", ex:""}
+];
+const USER_TURNS = ["The exam may have changed.","I would compare exam questions and results of another group that kept the old format.",""];
+function s2(){
+  const msgs = S.dlg.map(m=>`<div class="msg ${m.r==="ai"?"ai":"me"}"><div class="who">${m.r==="ai"?"AssessWise (scripted, preliminary)":"You"}</div>${esc(m.t)}</div>`).join("");
+  const st = S.dlgStage, done = st>=SCRIPT.length;
+  const cur = SCRIPT[Math.min(st,SCRIPT.length-1)];
+  return `<div class="card"><h2>Step 3: Dialogue about your reasoning</h2>
+  <p class="muted">Three levels of help: question, hint, worked parallel example. Using help never lowers your mark.</p>
+  <div id="chat" aria-live="polite">
+   <div class="msg me"><div class="who">You</div>${esc(S.explain||"(your explanation from step 2)")}</div>
+   ${msgs}
+  </div>
+  ${done?`<div class="ok">Dialogue finished. Continue to revise your text.</div>`:`
+  <div class="row"><button class="s" id="hint">Hint</button><button class="s" id="exm">Show a parallel example</button></div>
+  <div id="helpbox"></div>
+  <label for="reply">Your reply</label><textarea id="reply" placeholder="Type your own answer (or click 'Use a sample answer' for the demo)"></textarea>
+  <div class="row"><button class="p" id="send">Send</button><button class="s" id="sample">Use a sample answer</button></div>`}
+  <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+  <div class="row"><button class="d" id="dis" aria-expanded="${S.disagreeOpen}">I disagree with this comment</button>
+  ${S.disagreements.length?`<span class="muted">${S.disagreements.length} dispute(s) recorded</span>`:""}</div>
+  ${S.disagreeOpen?`<div class="fb" style="border-color:#B36B00"><dt>Which comment, and why do you disagree?</dt>
+   <textarea id="dtext" placeholder="Example: The comment says I have no evidence. But in paragraph 2 I cite the group's average grades. They support my claim because...">${""}</textarea>
+   <div class="row"><button class="p" id="dsend">Send for review</button></div></div>`:""}
+  ${S.disagreements.map((d,i)=>`<div class="msg me"><div class="who">Your dispute</div>${esc(d.t)}</div>
+   <div class="msg ai"><div class="who">AssessWise (scripted, preliminary)</div>${d.resolved?
+     `You are right that the evidence is present in paragraph 2. I withdraw that part of the comment. The remaining question is about the conclusion: does the evidence show that the <i>format</i> caused the change?`:
+     `Thank you. I still see an open question about the link between evidence and conclusion. I have marked this for your teacher to discuss with you.`}
+     ${d.resolved?"":`<div class="ok">Unresolved disagreement passed to the teacher.</div>`}</div>`).join("")}
+  <div class="row"><button class="p" id="go2" ${done?"":"disabled"}>Continue to revise</button></div></div>`;
+}
+function s3(){
+  const first = S.draft;
+  return `<div class="card"><h2>Step 4: Revise in your own words</h2>
+  <p class="muted">You change the text yourself and explain why. AssessWise only compares versions and links the change to a criterion.</p>
+  <div class="cols"><div class="ver"><b>Version 1</b><p>${esc(first)}</p></div>
+  <div><label for="rev">Version 2 (your edit)</label><textarea id="rev">${esc(S.revised)}</textarea></div></div>
+  <label for="why">Why did you change it?</label>
+  <textarea id="why" placeholder="My first sentence was too certain because...">${esc(S.why)}</textarea>
+  <div class="row"><button class="s" id="sampleRev">Use a sample revision</button><button class="p" id="compare">Compare versions</button></div>
+  <div id="cmp"></div>
+  <div class="row"><button class="p" id="go3">Continue to the new task</button></div></div>`;
+}
+function s4(){
+  return `<div class="card"><h2>Step 5: Independent transfer task</h2>
+  <p class="muted">No hints and no AI in this step. The teacher prepared this task in advance. It tests the same skill in a new situation.</p>
+  <div class="task">"Students who attend consultations get higher grades. Does this prove that consultations raise results? Explain."</div>
+  <label for="tr">Your answer</label>
+  <textarea id="tr">${esc(S.transfer)}</textarea>
+  <div class="row"><button class="s" id="sampleTr">Use a sample answer</button><button class="p" id="save">Save and send to teacher</button></div>
+  <div id="saved"></div>
+  <p class="muted">Limit: nothing inside the app can prevent a student from using another tool. For important marks the teacher may add a short in-class conversation.</p></div>`;
+}
+function teacher(){
+  const row=(k,v)=>`<tr><th style="width:26%">${k}</th><td>${v?esc(v):'<span class="muted">(not completed in this demo run)</span>'}</td></tr>`;
+  return `<div class="card"><h2>Teacher view: learning process, not only the text</h2>
+  <p class="muted">Fictional student "Student A". The teacher keeps responsibility for the final mark. AssessWise does not grade.</p>
+  <table><tbody>
+  ${row("AI-use declaration", S.aiUsed + (S.aiNote?": "+S.aiNote:""))}
+  ${row("Self-assessment", `A: ${S.self.claim||"-"} | B: ${S.self.evid||"-"} | C: ${S.self.alt||"-"}`)}
+  ${row("Version 1", S.draft)}
+  ${row("Student's explanation", S.explain)}
+  ${row("Disagreements with AI", S.disagreements.map(d=>d.t+(d.resolved?" [AI withdrew comment]":" [unresolved, needs teacher]")).join(" || "))}
+  ${row("Version 2", S.revised)}
+  ${row("Reason for change", S.why)}
+  ${row("Transfer task (no help)", S.transfer)}
+  </tbody></table>
+  <h3>Teacher's decision</h3>
+  <label for="mk">Final mark (entered by the teacher only)</label><input type="text" id="mk" value="${esc(S.mark)}" placeholder="e.g. 85">
+  <label for="tn">Note / follow-up question for a short in-class discussion</label>
+  <textarea id="tn">${esc(S.teacherNote)}</textarea>
+  <p class="muted">Not collected: keystrokes, camera, or any "percentage of AI authorship".</p></div>`;
+}
+
+function render(){
+  nav();
+  const m = $("#main");
+  m.innerHTML = (S.showEthics?ethics():"") + (S.view==="teacher"?teacher():[s0,s1,s2,s3,s4][S.step]());
+  wire();
+}
+function wire(){
+  const g = id=>document.getElementById(id);
+  if(S.view==="teacher"){
+    g("mk").oninput=e=>S.mark=e.target.value; g("tn").oninput=e=>S.teacherNote=e.target.value; return;
+  }
+  if(S.step===0){
+    g("draft").oninput=e=>S.draft=e.target.value;
+    g("ai").onchange=e=>S.aiUsed=e.target.value; g("ainote").oninput=e=>S.aiNote=e.target.value;
+    ["claim","evid","alt"].forEach(k=>g("sa_"+k).onchange=e=>S.self[k]=e.target.value);
+    g("go0").onclick=()=>{S.step=1;render()};
+  }
+  if(S.step===1){
+    g("ex").oninput=e=>S.explain=e.target.value;
+    g("go1").onclick=()=>{if(!S.explain.trim())S.explain="Because the grades went up after the change, so the change must be the reason.";
+      if(!S.dlg.length)S.dlg.push({r:"ai",t:SCRIPT[0].ai});S.step=2;render()};
+  }
+  if(S.step===2){
+    const done=S.dlgStage>=SCRIPT.length;
+    if(!done){
+      g("hint").onclick=()=>{g("helpbox").innerHTML=`<div class="ok"><b>Hint:</b> ${esc(SCRIPT[S.dlgStage].hint||"No hint needed.")}</div>`};
+      g("exm").onclick=()=>{g("helpbox").innerHTML=`<div class="ok"><b>Worked example:</b> ${esc(SCRIPT[S.dlgStage].ex||"No example needed.")}</div>`};
+      g("sample").onclick=()=>{g("reply").value=USER_TURNS[S.dlgStage]};
+      g("send").onclick=()=>{const v=g("reply").value.trim()||USER_TURNS[S.dlgStage];
+        S.dlg.push({r:"me",t:v});S.dlgStage++;
+        S.dlg.push({r:"ai",t:SCRIPT[S.dlgStage].ai});
+        if(S.dlgStage===SCRIPT.length-1)S.dlgStage=SCRIPT.length; render()};
+    }
+    g("dis").onclick=()=>{S.disagreeOpen=!S.disagreeOpen;render()};
+    if(S.disagreeOpen)g("dsend").onclick=()=>{const t=g("dtext").value.trim()||"The comment says I have no evidence. But my second paragraph cites the group's average grades, which support my claim because they show a change over time.";
+      S.disagreements.push({t,resolved:S.disagreements.length%2===0});S.disagreeOpen=false;render()};
+    g("go2").onclick=()=>{S.step=3;render()};
+  }
+  if(S.step===3){
+    g("rev").oninput=e=>S.revised=e.target.value; g("why").oninput=e=>S.why=e.target.value;
+    g("sampleRev").onclick=()=>{S.revised="After the move online, the group's average grade rose. This is consistent with online learning helping, but other factors, such as a different exam, could also explain it. I would need to compare exam difficulty and a group that did not change format.";
+      S.why="My first version was too certain. I treated a correlation as proof and did not rule out other explanations.";render()};
+    g("compare").onclick=()=>{g("cmp").innerHTML=`<div class="fb"><span class="prelim">preliminary AI comparison</span><dt>Change detected</dt><dd>"So online learning is more effective" became a cautious claim with alternative explanations.</dd><dt>Linked criteria</dt><dd>B. Justified conclusion: improved. C. Alternative explanation: now present.</dd><dt>For you to judge</dt><dd>Does the new version fully answer your own question about the exam?</dd></div>`};
+    g("go3").onclick=()=>{S.step=4;render()};
+  }
+  if(S.step===4){
+    g("tr").oninput=e=>S.transfer=e.target.value;
+    g("sampleTr").onclick=()=>{S.transfer="Not necessarily. Students who attend consultations may be more motivated, so motivation could explain the higher grades. To test it I would compare similar students with and without consultations.";render()};
+    g("save").onclick=()=>{g("saved").innerHTML=`<div class="ok">Saved. Your teacher can now see your first attempt, explanation, revision and this independent answer. <button class="s" id="tv">Open teacher view</button></div>`;
+      g("tv").onclick=()=>{S.view="teacher";render()}};
+  }
+}
+render();
+</script>
+</body>
+</html>
