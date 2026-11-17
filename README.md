@@ -32,7 +32,12 @@ Open assesswise.github.io in any browser.
 
 - The scenario: the claim "Online learning raises achievement". The student writes "the average grade rose, so online learning is more effective"; the dialogue helps them find alternative explanations (for example, a changed exam).
 - Use the **"Use a sample answer"** buttons to move quickly through the steps.
-- Try **"I disagree with this comment"** (the first dispute is withdrawn by the scripted AI, the second is passed to the teacher), then open **Teacher view** and **Ethics & data**.
+- Try **"I disagree with this comment"** (the first dispute is withdrawn by the scripted AI, the second is passed to the teacher), then open **Teacher view**.
+- Start at **0 Teacher setup**: the teacher sets the task, three criteria and the allowed AI use, and sees the outcome-evidence alignment table.
+- Switch on **Pedagogy lens** (top bar) to see the theory, course week and learning outcome behind each step.
+- **Quote check** really runs: a comment is shown only if its quote exists in the student's text (try it on **Risks and limits**).
+- Other screens: **What is real** (working / scripted / not built), **Evaluation plan**, **Reflection** (course-to-design table and a log for peer feedback, saved in the browser), **Ethics and data**.
+- Text size and high-contrast switches are in the top bar.
 - The mock-up is in English only.
 
 
@@ -65,4 +70,4 @@ Azamat Nagumanov, Kamil Bariev, Zhangir Yussupov, Alisher Berik. CSE-2604M Astan
 
 ## AI-use disclosure
 
-Claude & ChatGPT were used to structure the poster, draft the explanatory texts. The authors checked, edited and are responsible for the content.
+Claude & ChatGPT were used to structure the poster, and draft the explanatory texts. The authors checked, edited and are responsible for the content.
