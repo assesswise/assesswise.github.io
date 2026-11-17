@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#12355B">
 <title>AssessWise Prototype</title>
 <style>
 :root{--navy:#12355B;--teal:#0F8B8D;--amber:#F2A541;--ink:#1B2733;--muted:#53636f;--bg:#F3F6FA;--card:#fff;--line:#D5DEE8;--soft:#E3F1F1;--soft2:#FDF1DD;--red:#8E2318;--redbg:#FDE7E7;--green:#176B3A;--greenbg:#E4F4EA;--z:1}
@@ -61,7 +62,35 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .chip.real{background:var(--greenbg);color:var(--green);border:1px solid var(--green)}
 .chip.no{background:#EEF2F8;color:#33414e;border:1px solid #9FB0C2}
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media(max-width:700px){.cols{grid-template-columns:1fr}body{font-size:17px}h2{font-size:22px}.card{padding:14px}th{width:auto!important}}
+html{-webkit-text-size-adjust:100%}
+@media(max-width:700px){
+ body{font-size:16.5px;zoom:1}
+ .cols{grid-template-columns:1fr}
+ h2{font-size:21px}h3{font-size:18px}
+ header{padding:10px 14px}header h1{font-size:24px}header small{font-size:14px}
+ .badge{font-size:13px;width:100%}
+ .tools{padding:8px 14px;gap:6px}.tools>span{display:none}
+ .tools button{min-height:38px}
+ #fsm,#fsp{display:none}
+ nav{flex-wrap:nowrap;overflow-x:auto;padding:8px 14px;gap:6px;position:sticky;top:0;z-index:20;-webkit-overflow-scrolling:touch;box-shadow:0 2px 6px rgba(0,0,0,.12)}
+ nav button{white-space:nowrap;flex:0 0 auto;min-height:40px}
+ nav .lbl{flex:0 0 auto;white-space:nowrap}
+ main{padding:14px 12px 40px}
+ .card{padding:14px;border-radius:12px}
+ textarea,input[type=text],select{font-size:16px;width:100%}
+ button.p,button.s,button.d{min-height:44px;width:100%}
+ .row{flex-direction:column;align-items:stretch}
+ .msg{max-width:100%}
+ .lens{font-size:15px}
+ .checks label{padding:6px 0}.checks input{width:22px;height:22px;flex:0 0 auto}
+ table,thead,tbody,tr,th,td{display:block;width:100%}
+ thead{display:none}
+ tr{border:1px solid var(--line);border-radius:10px;margin-bottom:8px;overflow:hidden}
+ th,td{border:0;border-bottom:1px solid var(--line)}
+ tr>:last-child{border-bottom:0}
+ td:first-child{font-weight:700;color:var(--navy);background:#F7F9FC}
+ th{width:auto!important}
+}
 .ver{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#F7F9FC}
 .ver b{color:var(--navy)}
 table{border-collapse:collapse;width:100%;font-size:16px}
