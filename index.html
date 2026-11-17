@@ -5,25 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AssessWise Prototype</title>
 <style>
-:root{--navy:#12355B;--teal:#0F8B8D;--amber:#F2A541;--ink:#1B2733;--muted:#53636f;--bg:#F3F6FA;--card:#fff;--line:#D5DEE8;--soft:#E3F1F1;--soft2:#FDF1DD;--red:#8E2318;--redbg:#FDE7E7}
+:root{--navy:#12355B;--teal:#0F8B8D;--amber:#F2A541;--ink:#1B2733;--muted:#53636f;--bg:#F3F6FA;--card:#fff;--line:#D5DEE8;--soft:#E3F1F1;--soft2:#FDF1DD;--red:#8E2318;--redbg:#FDE7E7;--green:#176B3A;--greenbg:#E4F4EA;--z:1}
 *{box-sizing:border-box}
-body{margin:0;font:18px/1.5 Calibri,"Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--bg)}
-header{background:var(--navy);color:#fff;padding:14px 20px;display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;justify-content:space-between}
+body{margin:0;font:18px/1.5 Calibri,"Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--bg);zoom:var(--z)}
+body.hc{--bg:#fff;--ink:#000;--muted:#222;--line:#000;--soft:#fff;--soft2:#fff;--teal:#00504f;--card:#fff}
+body.hc .card,body.hc .fb,body.hc .msg,body.hc .ver,body.hc .ok,body.hc .lens,body.hc .ethics{border:2px solid #000}
+body.hc .quote{background:#fff;border-left:6px solid #000}
+.skip{position:absolute;left:-999px;top:0;background:#fff;color:#000;padding:8px;z-index:50}
+.skip:focus{left:8px}
+header{background:var(--navy);color:#fff;padding:12px 20px;display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;justify-content:space-between}
 header h1{margin:0;font-size:28px}
 header small{color:#CFE3F5;font-size:15px}
 .badge{background:var(--redbg);color:var(--red);border:1px solid var(--red);padding:6px 12px;border-radius:8px;font-weight:700;font-size:14px}
-nav{display:flex;flex-wrap:wrap;gap:6px;padding:12px 20px;background:#fff;border-bottom:1px solid var(--line)}
-nav button{font:inherit;font-size:15px;padding:8px 12px;border:1px solid var(--line);background:#fff;border-radius:999px;cursor:pointer;color:var(--ink)}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:8px 20px;background:#0c2742;color:#fff;font-size:15px}
+.tools button{font:inherit;font-size:14px;padding:4px 10px;border-radius:8px;border:1px solid #9FB0C2;background:transparent;color:#fff;cursor:pointer}
+.tools button[aria-pressed=true]{background:var(--amber);color:var(--navy);border-color:var(--amber);font-weight:700}
+.tools label{display:flex;gap:6px;align-items:center;margin:0;font-weight:400;color:#fff;font-size:15px}
+nav{display:flex;flex-wrap:wrap;gap:6px;padding:10px 20px;background:#fff;border-bottom:1px solid var(--line)}
+nav button{font:inherit;font-size:15px;padding:7px 12px;border:1px solid var(--line);background:#fff;border-radius:999px;cursor:pointer;color:var(--ink)}
 nav button[aria-current=step]{background:var(--teal);color:#fff;border-color:var(--teal);font-weight:700}
-nav .sp{flex:1}
 nav .t[aria-current=step]{background:var(--amber);color:var(--navy);border-color:var(--amber)}
-main{max-width:980px;margin:0 auto;padding:20px}
+nav .x{border-style:dashed}
+nav .x[aria-current=step]{background:var(--navy);color:#fff;border-color:var(--navy)}
+nav .lbl{font-size:13px;color:var(--muted);align-self:center;margin-right:2px;text-transform:uppercase;letter-spacing:.04em}
+main{max-width:1000px;margin:0 auto;padding:20px 16px 40px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
 h2{margin:0 0 6px;color:var(--navy);font-size:26px}
 h3{margin:14px 0 6px;color:var(--navy);font-size:19px}
 p{margin:6px 0}
 .muted{color:var(--muted);font-size:15px}
-.task{background:var(--soft);border-radius:10px;padding:12px 14px}
+.task{background:var(--soft);border-radius:10px;padding:12px 14px;border:1px solid #A7D8D9}
 ul.crit{margin:8px 0;padding-left:22px}
 textarea,input[type=text]{width:100%;font:inherit;padding:10px;border:1.5px solid #9FB0C2;border-radius:8px;background:#fff;color:var(--ink)}
 textarea{min-height:90px;resize:vertical}
@@ -31,10 +42,10 @@ button.p,button.s{font:inherit;font-weight:700;padding:10px 18px;border-radius:1
 button.p{background:var(--teal);color:#fff}
 button.s{background:#fff;color:var(--teal)}
 button.d{font:inherit;padding:8px 14px;border-radius:10px;cursor:pointer;border:2px solid #B36B00;background:var(--soft2);color:#6b3f00;font-weight:700}
-button:focus-visible,textarea:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #1a73e8;outline-offset:2px}
+button:focus-visible,textarea:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #1a73e8;outline-offset:2px}
 button:disabled{opacity:.45;cursor:not-allowed}
 .row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;align-items:center}
-.msg{border-radius:12px;padding:12px 14px;margin:10px 0;max-width:92%}
+.msg{border-radius:12px;padding:12px 14px;margin:10px 0;max-width:94%}
 .ai{background:var(--soft);border:1px solid #A7D8D9}
 .me{background:#EEF2F8;border:1px solid var(--line);margin-left:auto}
 .who{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
@@ -42,109 +53,205 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .fb dt{font-weight:700;color:var(--navy);font-size:15px}
 .fb dd{margin:0 0 8px}
 .quote{background:var(--soft2);border-left:4px solid var(--amber);padding:6px 10px;border-radius:4px}
-.prelim{display:inline-block;background:var(--soft2);color:#6b3f00;font-size:13px;font-weight:700;padding:2px 8px;border-radius:6px}
+.prelim{display:inline-block;background:var(--soft2);color:#6b3f00;font-size:13px;font-weight:700;padding:2px 8px;border-radius:6px;border:1px solid #E7C27F}
+.chip{display:inline-block;font-size:13px;font-weight:700;padding:2px 8px;border-radius:6px;margin-right:6px}
+.chip.ok{background:var(--greenbg);color:var(--green);border:1px solid var(--green)}
+.chip.bad{background:var(--redbg);color:var(--red);border:1px solid var(--red)}
+.chip.sim{background:var(--soft2);color:#6b3f00;border:1px solid #E7C27F}
+.chip.real{background:var(--greenbg);color:var(--green);border:1px solid var(--green)}
+.chip.no{background:#EEF2F8;color:#33414e;border:1px solid #9FB0C2}
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-td,th{overflow-wrap:anywhere}
-main{padding:20px 16px}
 @media(max-width:700px){.cols{grid-template-columns:1fr}body{font-size:17px}h2{font-size:22px}.card{padding:14px}th{width:auto!important}}
 .ver{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#F7F9FC}
 .ver b{color:var(--navy)}
 table{border-collapse:collapse;width:100%;font-size:16px}
-th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
 th{background:var(--navy);color:#fff}
-.hide{display:none}
 .ok{background:var(--soft);border:1px solid var(--teal);padding:10px 12px;border-radius:10px;margin-top:10px}
-details{margin-top:10px}
-summary{cursor:pointer;font-weight:700;color:var(--navy)}
+.lens{background:#EEF5FF;border:1.5px dashed #5a86b8;border-radius:12px;padding:10px 14px;margin:0 0 14px;font-size:16px}
+.lens b{color:var(--navy)}
 .ethics{background:#fff;border:1.5px solid var(--amber);border-radius:12px;padding:14px;margin:14px 0}
 .ethics li{margin:4px 0}
 label{display:block;margin:10px 0 4px;font-weight:700;color:var(--navy);font-size:16px}
-select{font:inherit;padding:8px;border:1.5px solid #9FB0C2;border-radius:8px;background:#fff}
+select{font:inherit;padding:8px;border:1.5px solid #9FB0C2;border-radius:8px;background:#fff;color:var(--ink)}
+.checks label{display:flex;gap:8px;align-items:flex-start;font-weight:400;color:var(--ink)}
+.risk{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:10px 0;background:#fff}
+.risk h3{margin-top:0}
+.hide{display:none}
 </style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 <header>
-  <div><h1>AssessWise</h1><small>Hearing the student think: attempt, explain, discuss, revise, transfer</small></div>
+  <div><h1>AssessWise</h1><small>Making understanding visible: attempt, explain, discuss, revise, transfer</small></div>
   <div class="badge" role="note">CONCEPT: clickable mock-up. The dialogue is pre-scripted. No AI is running. Fictional student.</div>
 </header>
-<nav id="nav" aria-label="Steps"></nav>
-<main id="main"></main>
+<div class="tools" role="toolbar" aria-label="Display and presentation options">
+  <button id="fsm" aria-label="Smaller text">A-</button><button id="fsp" aria-label="Larger text">A+</button>
+  <button id="hcb" aria-pressed="false">High contrast</button>
+  <button id="lensb" aria-pressed="false">Pedagogy lens</button>
+  <span style="opacity:.8">Pedagogy lens shows why each step is designed this way (theory, course week, learning outcome).</span>
+</div>
+<nav id="nav" aria-label="Screens"></nav>
+<main id="main" tabindex="-1"></main>
 
 <script>
+/* ---------- State ---------- */
 const STEPS = ["1 First attempt","2 Explain","3 Dialogue","4 Revise","5 Transfer"];
+const SAVE_KEY = "assesswise_reflect_v1";
 const S = {
-  step:0, view:"student",
+  step:0, view:"setup", lens:false, hc:false, zoom:1,
+  setup:{task:"Evaluate the claim \"Online learning raises achievement.\"",
+    crit:["A. Clear claim","B. Conclusion is justified by the evidence","C. Considers an alternative explanation"],
+    ai:{explain:true,question:true,generate:false,rewrite:false}, langSeparate:true},
   draft:"After the move online, the group's average grade rose. So online learning is more effective.",
   aiUsed:"No", aiNote:"", self:{claim:"",evid:"",alt:""},
-  explain:"", dlg:[], dlgStage:0, hintLevel:0, disagreeOpen:false, disagreements:[], resolved:false,
-  revised:"", why:"", transfer:"", mark:"", teacherNote:"", showEthics:false
+  explain:"", dlg:[], dlgStage:0, disagreeOpen:false, disagreements:[],
+  revised:"", why:"", transfer:"", mark:"", teacherNote:"", confirmed:false,
+  qtest:"Students always perform worse online.", qres:null,
+  reflect:{rows:[{fb:"",ch:""},{fb:"",ch:""},{fb:"",ch:""}], learn1:"", learn2:""}
 };
+try{const r=JSON.parse(localStorage.getItem(SAVE_KEY)||"null"); if(r&&r.rows)S.reflect=r;}catch(e){}
+function saveReflect(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(S.reflect))}catch(e){}}
+
 const $ = s => document.querySelector(s);
 const esc = t => String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const norm = t => String(t).toLowerCase().replace(/[‘’]/g,"'").replace(/[^a-z0-9' ]+/g," ").replace(/\s+/g," ").trim();
 
+/* Real quote checker: a feedback quote is shown only if it exists in the student's own text */
+function studentCorpus(){ return [S.draft,S.explain,...S.dlg.filter(m=>m.r==="me").map(m=>m.t),S.revised,S.transfer].join(" "); }
+function quoteOk(q){ return !!q && norm(studentCorpus()).includes(norm(q)); }
+
+/* ---------- Content ---------- */
+const LENS = {
+ setup:["Constructive alignment (Biggs, 1996)","Week 3","The teacher first fixes outcomes, criteria and allowed AI use. Every later step is checked against the same criteria. Week 5: the teacher, not the tool, owns the rules."],
+ 0:["Self-assessment before feedback (Nicol & Macfarlane-Dick, 2006); formative assessment (Black & Wiliam, 1998)","Week 6","Rating your own work first makes the student judge quality before hearing the AI. Outcome 1: explain how claim and evidence relate."],
+ 1:["Didactic triangle: teacher, student, content (Week 7); inference made explicit","Week 7","The student explains one key choice in own words. The AI only points at the student's own fragment. Outcome 1."],
+ 2:["Social constructivism and graduated support (Week 3); TPACK (Mishra & Koehler, 2006)","Weeks 3, 9","AI is used only for questioning (technology serves pedagogy). Dispute button: the learner evaluates the machine's advice. Outcomes 2 and 3."],
+ 3:["Feedback becomes useful when the learner acts on it (Black & Wiliam, 1998)","Week 6","The student, not the AI, rewrites and explains why. Outcomes 2 and 3."],
+ 4:["Assessment aligned with the outcome: apply the skill in a new situation (Bloom: apply, evaluate; Padagogy Wheel)","Weeks 3, 9","Polish of the first text proves little; the transfer task gives independent evidence. Outcome 4."],
+ teacher:["Valid, reliable, fair and transparent assessment (Week 6); educational judgement (Magnússon & Rytzler, 2022)","Weeks 5, 6","The AI never grades. The teacher interprets the evidence and may add a short conversation."],
+ status:["Honesty about the prototype","Exam requirement","Features that are not operational are identified as such; nothing simulated is presented as working AI."],
+ risks:["Critical evaluation of the solution","Weeks 5, 8, 10","Every AI product can fail. We show how the design limits harm instead of claiming it cannot happen."],
+ eval:["Evidence-informed evaluation; practical implementation in HE","Weeks 6, 10","A pilot gives preliminary observations. It cannot prove general effectiveness."],
+ reflect:["Reflection on course learning and peer feedback","Weeks 1-10","Links readings and activities to design decisions, and peer feedback to revisions."],
+ ethics:["Ethics and responsible use of AI; UDL (CAST, 2024)","Weeks 5, 8","Transparency, right to dispute, minimal data, no surveillance, accessibility."]
+};
+function lensBox(k){
+  if(!S.lens||!LENS[k])return "";
+  const [t,w,x]=LENS[k];
+  return `<div class="lens" role="note"><b>Pedagogy lens:</b> ${esc(t)}<br><b>Course link:</b> ${esc(w)}. ${esc(x)}</div>`;
+}
+
+const SCRIPT = [
+ {crit:"B. Conclusion is justified by the evidence", q:"the group's average grade rose", why:"The text links a rise in the average grade to the teaching format.",
+  ai:"Other things also changed at that time. Can you name another change that could have affected the average grade?",
+  hint:"Hint: think about the exam, the group, the grading, or the period itself.",
+  ex:"Worked parallel example (a different topic): a school sees test scores rise after a new canteen opens. Was it the food? Maybe the test was easier, or a stronger cohort arrived. Now return to your own claim."},
+ {crit:"C. Considers an alternative explanation", q:"The exam may have changed.", why:"You named a possible alternative, but not yet how to test it.",
+  ai:"Good: the exam may have changed. How could you check that explanation? What data would you need?",
+  hint:"Hint: compare the old and new exam questions, or compare groups taking the same exam.",
+  ex:"Worked parallel example: to test whether a new test was easier, compare how a group that did not change format performed on both tests."},
+ {crit:"", q:"", why:"", ai:"That is a clear plan to test your own explanation. You can now revise your conclusion in step 4. You can also dispute any comment above if you think it is wrong.", hint:"", ex:""}
+];
+const USER_TURNS = ["The exam may have changed.","I would compare exam questions and results of another group that kept the old format.",""];
+
+const STATUS = [
+ ["Self-assessment, AI-use declaration, text boxes, version display","real","Works in the browser, no server needed."],
+ ["Quote check: a comment is shown only if its quote exists in the student's text","real","Implemented as simple text matching; see Risks and Dialogue. It does not judge meaning."],
+ ["AI dialogue: questions, hints, parallel examples","sim","Pre-scripted for one scenario. No language model is running."],
+ ["Reply to \"I disagree\"","sim","Scripted: the first dispute is withdrawn, the second goes to the teacher. A real system must re-assess each case."],
+ ["Version comparison and linking change to criterion","sim","Scripted text. A real version would compare the two texts."],
+ ["Teacher view and evidence checklist","real","Reads the demo state. The mark is typed by the teacher; nothing is graded automatically."],
+ ["Real AI model, quality of AI comments","no","Not built. Needs testing for wrong or generic comments."],
+ ["LMS integration, accounts, data storage and deletion","no","Not built. Needs institutional approval and a data-protection plan."],
+ ["Kazakh and Russian versions, text-to-speech","no","Not built or tested. This mock-up is in English only."],
+ ["Pilot study and effectiveness","no","Not done. Effectiveness is unproven."]
+];
+const CH = {real:"working",sim:"scripted",no:"not built"};
+
+/* ---------- Navigation ---------- */
 function nav(){
-  const n = $("#nav");
-  n.innerHTML = STEPS.map((t,i)=>`<button data-s="${i}" ${S.view==="student"&&S.step===i?'aria-current="step"':''}>${t}</button>`).join("")
-   + `<span class="sp"></span><button class="t" data-v="teacher" ${S.view==="teacher"?'aria-current="step"':''}>Teacher view</button>`
-   + `<button data-v="ethics">Ethics &amp; data</button>`;
-  n.querySelectorAll("button[data-s]").forEach(b=>b.onclick=()=>{S.view="student";S.step=+b.dataset.s;render()});
-  n.querySelector("[data-v=teacher]").onclick=()=>{S.view="teacher";render()};
-  n.querySelector("[data-v=ethics]").onclick=()=>{S.showEthics=!S.showEthics;render()};
+  const n=$("#nav");
+  const cur=(v,i)=> (S.view===v&&(v!=="student"||S.step===i))?'aria-current="step"':'';
+  n.innerHTML = `<span class="lbl">Flow</span><button data-v="setup" ${cur("setup")}>0 Teacher setup</button>`
+   + STEPS.map((t,i)=>`<button data-s="${i}" ${cur("student",i)}>${t}</button>`).join("")
+   + `<button class="t" data-v="teacher" ${cur("teacher")}>Teacher view</button>`
+   + `<span class="lbl" style="margin-left:12px">Project</span>`
+   + [["status","What is real"],["risks","Risks and limits"],["eval","Evaluation plan"],["reflect","Reflection"],["ethics","Ethics and data"]].map(([v,l])=>`<button class="x" data-v="${v}" ${cur(v)}>${l}</button>`).join("");
+  n.querySelectorAll("button[data-s]").forEach(b=>b.onclick=()=>go("student",+b.dataset.s));
+  n.querySelectorAll("button[data-v]").forEach(b=>b.onclick=()=>go(b.dataset.v));
 }
-function ethics(){
-  return `<div class="ethics" role="region" aria-label="Ethics and data"><h3 style="margin-top:0">Ethics and data, visible to everyone</h3><ul>
-  <li><b>Transparency:</b> every comment shows the criterion, the quoted fragment and the reason. AI comments are marked <span class="prelim">preliminary</span>.</li>
-  <li><b>Right to disagree:</b> any comment can be disputed and sent to the teacher.</li>
-  <li><b>Minimal data:</b> this demo uses an invented text. No names or student ID numbers. If text is sent to an external AI service, this screen would say so before sending.</li>
-  <li><b>No hidden surveillance:</b> no keystroke logging, camera or "authorship percentage". The AI-use declaration helps discuss rules; it is not proof of authorship.</li>
-  <li><b>Help is not penalised:</b> using hints does not lower the mark.</li>
-  <li><b>Accessibility:</b> full keyboard use, high contrast, no timers. Language form is assessed separately from content when the task says so.</li></ul></div>`;
-}
-function stepper(){ return ""; }
+function go(v,i){ S.view=v; if(i!==undefined)S.step=i; render(); const m=$("#main"); if(m)m.focus({preventScroll:true}); window.scrollTo(0,0); }
 
-function s0(){
-  return `<div class="card"><h2>Step 1: First attempt</h2>
-  <p class="muted">Task set by the teacher, with allowed AI use: "AI may explain terms and ask questions. It may not write or rewrite your text."</p>
-  <div class="task"><b>Task:</b> Evaluate the claim "Online learning raises achievement."<br><b>Criteria:</b>
-  <ul class="crit"><li>A. Clear claim</li><li>B. Conclusion is justified by the evidence</li><li>C. Considers an alternative explanation</li></ul></div>
+/* ---------- Views ---------- */
+function vSetup(){
+  const a=S.setup.ai;
+  return `${lensBox("setup")}<div class="card"><h2>Step 0: Teacher sets up the task</h2>
+  <p class="muted">The teacher decides what is assessed and how AI may be used before any student starts. Edit the fields: the student screens use them.</p>
+  <label for="st">Task</label><textarea id="st">${esc(S.setup.task)}</textarea>
+  <h3>Criteria (three, same criteria in every step)</h3>
+  ${S.setup.crit.map((c,i)=>`<label for="sc${i}">Criterion ${i+1}</label><input type="text" id="sc${i}" value="${esc(c)}">`).join("")}
+  <h3>Allowed use of AI in this task</h3>
+  <div class="checks">
+   <label><input type="checkbox" id="a_explain" ${a.explain?"checked":""}> AI may explain terms and concepts</label>
+   <label><input type="checkbox" id="a_question" ${a.question?"checked":""}> AI may ask questions about my own text</label>
+   <label><input type="checkbox" id="a_generate" ${a.generate?"checked":""}> AI may generate text for my answer</label>
+   <label><input type="checkbox" id="a_rewrite" ${a.rewrite?"checked":""}> AI may rewrite my sentences</label>
+   <label><input type="checkbox" id="a_lang" ${S.setup.langSeparate?"checked":""}> Language accuracy is assessed separately from reasoning</label></div>
+  <p class="muted">In this prototype the AI can never grade. Unchecked boxes mean the tool will not do it.</p>
+  <h3>Alignment: learning outcome, evidence, where it appears</h3>
+  <table><thead><tr><th>Learning outcome</th><th>Evidence the teacher sees</th><th>Step</th></tr></thead><tbody>
+   <tr><td>1. Explain how a claim relates to its evidence</td><td>Draft and explanation of a key inference</td><td>1, 2</td></tr>
+   <tr><td>2. Identify an alternative explanation and a way to examine it</td><td>Student's own competing explanation and comparison</td><td>3, 4</td></tr>
+   <tr><td>3. Evaluate feedback and justify a decision</td><td>Reasoned revision or justified disagreement</td><td>3, 4</td></tr>
+   <tr><td>4. Apply the same skill in a new situation</td><td>Independent answer to the transfer task</td><td>5</td></tr></tbody></table>
+  <div class="row"><button class="p" id="go">Start as the student</button></div></div>`;
+}
+function vS0(){
+  const aiList=Object.entries(S.setup.ai).map(([k,v])=>`<li>${v?"Allowed":"Not allowed"}: ${({explain:"AI explains terms",question:"AI asks questions",generate:"AI generates text",rewrite:"AI rewrites sentences"})[k]}</li>`).join("");
+  return `${lensBox(0)}<div class="card"><h2>Step 1: First attempt</h2>
+  <p class="muted">Task and rules set by the teacher (step 0).</p>
+  <div class="task"><b>Task:</b> ${esc(S.setup.task)}<br><b>Criteria:</b><ul class="crit">${S.setup.crit.map(c=>`<li>${esc(c)}</li>`).join("")}</ul><b>AI rules:</b><ul class="crit">${aiList}</ul></div>
   <label for="draft">Your short draft (fictional example is pre-filled)</label>
   <textarea id="draft">${esc(S.draft)}</textarea>
   <label for="ai">Did you use AI for this draft?</label>
-  <select id="ai"><option ${S.aiUsed==="No"?"selected":""}>No</option><option ${S.aiUsed==="Yes, to explain terms"?"selected":""}>Yes, to explain terms</option><option ${S.aiUsed==="Yes, to generate text"?"selected":""}>Yes, to generate text</option></select>
+  <select id="ai">${["No","Yes, to explain terms","Yes, to generate text"].map(o=>`<option ${S.aiUsed===o?"selected":""}>${o}</option>`).join("")}</select>
   <label for="ainote">Where / how (optional)</label><input type="text" id="ainote" value="${esc(S.aiNote)}">
+  <p class="muted">The declaration starts a conversation about the rules. It is not proof of authorship.</p>
   <h3>Self-assessment before feedback</h3>
   <p class="muted">Rate yourself first: where is your work strongest and weakest?</p>
-  ${["claim:A. Clear claim","evid:B. Justified conclusion","alt:C. Alternative explanation"].map(x=>{const[k,l]=x.split(":");return `<label for="sa_${k}">${l}</label><select id="sa_${k}"><option value="">choose...</option>${["Strong","Partly","Weak","Not sure"].map(o=>`<option ${S.self[k]===o?"selected":""}>${o}</option>`).join("")}</select>`}).join("")}
+  ${S.setup.crit.map((c,i)=>{const k=["claim","evid","alt"][i];return `<label for="sa_${k}">${esc(c)}</label><select id="sa_${k}"><option value="">choose...</option>${["Strong","Partly","Weak","Not sure"].map(o=>`<option ${S.self[k]===o?"selected":""}>${o}</option>`).join("")}</select>`}).join("")}
   <div class="row"><button class="p" id="go0">Submit and continue</button></div></div>`;
 }
-function s1(){
-  return `<div class="card"><h2>Step 2: Explain a key choice</h2>
+function vS1(){
+  const q=SCRIPT[0].q, ok=quoteOk(q);
+  return `${lensBox(1)}<div class="card"><h2>Step 2: Explain a key choice</h2>
   <p class="muted">AssessWise asks about one specific fragment of your own text.</p>
-  <dl class="fb"><span class="prelim">preliminary AI comment</span>
-  <dt>Criterion</dt><dd>B. Conclusion is justified by the evidence</dd>
-  <dt>Quote from your work</dt><dd class="quote">"After the move online, the group's average grade rose. So online learning is more effective."</dd>
-  <dt>Why this fragment</dt><dd>The text links a rise in the average grade to the teaching format.</dd>
+  <dl class="fb"><span class="prelim">preliminary AI comment (scripted)</span>
+  <dt>Criterion</dt><dd>${esc(SCRIPT[0].crit)}</dd>
+  <dt>Quote from your work</dt><dd class="quote">"${esc(q)}" ${ok?'<span class="chip ok">quote found in your text</span>':'<span class="chip bad">quote NOT found: comment withheld</span>'}</dd>
+  <dt>Why this fragment</dt><dd>${esc(SCRIPT[0].why)}</dd>
   <dt>Question for you</dt><dd>Why did you decide that the format caused the rise? Explain your reasoning in your own words.</dd></dl>
+  ${ok?"":`<div class="ok">The quote does not exist in the student's text, so the system does not show this comment and flags it for the teacher. (Real check, simple text match.)</div>`}
   <label for="ex">Your explanation</label>
   <textarea id="ex" placeholder="Because the grades went up after the change...">${esc(S.explain)}</textarea>
   <div class="row"><button class="p" id="go1">Continue to dialogue</button></div></div>`;
 }
-const SCRIPT = [
- {ai:"Thank you. Other things also changed at that time. Can you name another change that could have affected the average grade?", hint:"Hint: think about the exam, the group, the grading, or the period itself.", ex:"Worked parallel example (a different topic): a school sees test scores rise after a new canteen opens. Was it the food? Maybe the test was easier, or a stronger cohort arrived. Now return to your own claim."},
- {ai:"Good: the exam may have changed. How could you check that explanation? What data would you need?", hint:"Hint: compare the old and new exam questions, or compare groups taking the same exam.", ex:"Worked parallel example: to test whether a new test was easier, compare how a group that did not change formats performed on both tests."},
- {ai:"That is a clear plan to test your own explanation. You can now revise your conclusion in step 4. You can also dispute any comment above if you think it is wrong.", hint:"", ex:""}
-];
-const USER_TURNS = ["The exam may have changed.","I would compare exam questions and results of another group that kept the old format.",""];
-function s2(){
-  const msgs = S.dlg.map(m=>`<div class="msg ${m.r==="ai"?"ai":"me"}"><div class="who">${m.r==="ai"?"AssessWise (scripted, preliminary)":"You"}</div>${esc(m.t)}</div>`).join("");
-  const st = S.dlgStage, done = st>=SCRIPT.length;
-  const cur = SCRIPT[Math.min(st,SCRIPT.length-1)];
-  return `<div class="card"><h2>Step 3: Dialogue about your reasoning</h2>
-  <p class="muted">Three levels of help: question, hint, worked parallel example. Using help never lowers your mark.</p>
-  <div id="chat" aria-live="polite">
-   <div class="msg me"><div class="who">You</div>${esc(S.explain||"(your explanation from step 2)")}</div>
-   ${msgs}
-  </div>
+function aiMsg(m){
+  if(!m.sc) return `<div class="msg ai"><div class="who">AssessWise (scripted, preliminary)</div>${esc(m.t)}</div>`;
+  const sc=m.sc, has=sc.q;
+  const ok=has?quoteOk(sc.q):true;
+  return `<div class="msg ai"><div class="who">AssessWise (scripted, preliminary)</div>
+   ${has?`<p><b>Criterion:</b> ${esc(sc.crit)}</p><p class="quote">"${esc(sc.q)}" ${ok?'<span class="chip ok">quote found</span>':'<span class="chip bad">quote not found: withheld</span>'}</p><p class="muted">${esc(sc.why)}</p>`:""}
+   ${ok?`<p><b>Question:</b> ${esc(sc.ai)}</p>`:`<p>Comment withheld because its quote is not in your text. Your teacher has been notified.</p>`}</div>`;
+}
+function vS2(){
+  const msgs=S.dlg.map(m=>m.r==="ai"?aiMsg(m):`<div class="msg me"><div class="who">You</div>${esc(m.t)}</div>`).join("");
+  const st=S.dlgStage, done=st>=SCRIPT.length;
+  return `${lensBox(2)}<div class="card"><h2>Step 3: Dialogue about your reasoning</h2>
+  <p class="muted">Three levels of help: question, hint, worked parallel example. Using help never lowers your mark. You can also dispute any comment.</p>
+  <div id="chat" aria-live="polite"><div class="msg me"><div class="who">You</div>${esc(S.explain||"(your explanation from step 2)")}</div>${msgs}</div>
   ${done?`<div class="ok">Dialogue finished. Continue to revise your text.</div>`:`
   <div class="row"><button class="s" id="hint">Hint</button><button class="s" id="exm">Show a parallel example</button></div>
   <div id="helpbox"></div>
@@ -154,20 +261,19 @@ function s2(){
   <div class="row"><button class="d" id="dis" aria-expanded="${S.disagreeOpen}">I disagree with this comment</button>
   ${S.disagreements.length?`<span class="muted">${S.disagreements.length} dispute(s) recorded</span>`:""}</div>
   ${S.disagreeOpen?`<div class="fb" style="border-color:#B36B00"><dt>Which comment, and why do you disagree?</dt>
-   <textarea id="dtext" placeholder="Example: The comment says I have no evidence. But in paragraph 2 I cite the group's average grades. They support my claim because...">${""}</textarea>
+   <textarea id="dtext" placeholder="Example: The comment says I have no evidence. But in paragraph 2 I cite the group's average grades. They support my claim because..."></textarea>
    <div class="row"><button class="p" id="dsend">Send for review</button></div></div>`:""}
-  ${S.disagreements.map((d,i)=>`<div class="msg me"><div class="who">Your dispute</div>${esc(d.t)}</div>
+  ${S.disagreements.map(d=>`<div class="msg me"><div class="who">Your dispute</div>${esc(d.t)}</div>
    <div class="msg ai"><div class="who">AssessWise (scripted, preliminary)</div>${d.resolved?
-     `You are right that the evidence is present in paragraph 2. I withdraw that part of the comment. The remaining question is about the conclusion: does the evidence show that the <i>format</i> caused the change?`:
-     `Thank you. I still see an open question about the link between evidence and conclusion. I have marked this for your teacher to discuss with you.`}
+     `You are right that the evidence is present. I withdraw that part of the comment. The remaining question is about the conclusion: does the evidence show that the <i>format</i> caused the change?`:
+     `Thank you. I still see an open question about the link between evidence and conclusion. I have marked this for your teacher to discuss with you. Disagreeing carries no penalty.`}
      ${d.resolved?"":`<div class="ok">Unresolved disagreement passed to the teacher.</div>`}</div>`).join("")}
   <div class="row"><button class="p" id="go2" ${done?"":"disabled"}>Continue to revise</button></div></div>`;
 }
-function s3(){
-  const first = S.draft;
-  return `<div class="card"><h2>Step 4: Revise in your own words</h2>
+function vS3(){
+  return `${lensBox(3)}<div class="card"><h2>Step 4: Revise in your own words</h2>
   <p class="muted">You change the text yourself and explain why. AssessWise only compares versions and links the change to a criterion.</p>
-  <div class="cols"><div class="ver"><b>Version 1</b><p>${esc(first)}</p></div>
+  <div class="cols"><div class="ver"><b>Version 1</b><p>${esc(S.draft)}</p></div>
   <div><label for="rev">Version 2 (your edit)</label><textarea id="rev">${esc(S.revised)}</textarea></div></div>
   <label for="why">Why did you change it?</label>
   <textarea id="why" placeholder="My first sentence was too certain because...">${esc(S.why)}</textarea>
@@ -175,23 +281,31 @@ function s3(){
   <div id="cmp"></div>
   <div class="row"><button class="p" id="go3">Continue to the new task</button></div></div>`;
 }
-function s4(){
-  return `<div class="card"><h2>Step 5: Independent transfer task</h2>
+function vS4(){
+  return `${lensBox(4)}<div class="card"><h2>Step 5: Independent transfer task</h2>
   <p class="muted">No hints and no AI in this step. The teacher prepared this task in advance. It tests the same skill in a new situation.</p>
   <div class="task">"Students who attend consultations get higher grades. Does this prove that consultations raise results? Explain."</div>
-  <label for="tr">Your answer</label>
-  <textarea id="tr">${esc(S.transfer)}</textarea>
+  <label for="tr">Your answer</label><textarea id="tr">${esc(S.transfer)}</textarea>
   <div class="row"><button class="s" id="sampleTr">Use a sample answer</button><button class="p" id="save">Save and send to teacher</button></div>
   <div id="saved"></div>
   <p class="muted">Limit: nothing inside the app can prevent a student from using another tool. For important marks the teacher may add a short in-class conversation.</p></div>`;
 }
-function teacher(){
+function vTeacher(){
   const row=(k,v)=>`<tr><th style="width:26%">${k}</th><td>${v?esc(v):'<span class="muted">(not completed in this demo run)</span>'}</td></tr>`;
-  return `<div class="card"><h2>Teacher view: learning process, not only the text</h2>
-  <p class="muted">Fictional student "Student A". The teacher keeps responsibility for the final mark. AssessWise does not grade.</p>
+  const ev=[
+   ["1. Explains how claim and evidence relate", S.draft.trim()&&S.explain.trim().length>10],
+   ["2. Identifies an alternative explanation and a way to examine it", S.dlgStage>=SCRIPT.length],
+   ["3. Evaluates feedback and justifies a decision", S.disagreements.length>0||S.why.trim().length>10],
+   ["4. Applies the skill independently", S.transfer.trim().length>10]];
+  return `${lensBox("teacher")}<div class="card"><h2>Teacher view: learning process, not only the text</h2>
+  <p class="muted">Fictional "Student A". The teacher keeps responsibility for the final mark. AssessWise does not grade.</p>
+  <h3>Evidence for each learning outcome</h3>
+  <table><thead><tr><th>Outcome</th><th>Evidence available</th></tr></thead><tbody>
+  ${ev.map(e=>`<tr><td>${e[0]}</td><td>${e[1]?'<span class="chip ok">evidence present</span>':'<span class="chip no">not yet</span>'} <span class="muted">The teacher judges its quality.</span></td></tr>`).join("")}</tbody></table>
+  <h3>The student's work</h3>
   <table><tbody>
   ${row("AI-use declaration", S.aiUsed + (S.aiNote?": "+S.aiNote:""))}
-  ${row("Self-assessment", `A: ${S.self.claim||"-"} | B: ${S.self.evid||"-"} | C: ${S.self.alt||"-"}`)}
+  ${row("Self-assessment", S.setup.crit.map((c,i)=>c.split(".")[0]+": "+(S.self[["claim","evid","alt"][i]]||"-")).join(" | "))}
   ${row("Version 1", S.draft)}
   ${row("Student's explanation", S.explain)}
   ${row("Disagreements with AI", S.disagreements.map(d=>d.t+(d.resolved?" [AI withdrew comment]":" [unresolved, needs teacher]")).join(" || "))}
@@ -201,32 +315,117 @@ function teacher(){
   </tbody></table>
   <h3>Teacher's decision</h3>
   <label for="mk">Final mark (entered by the teacher only)</label><input type="text" id="mk" value="${esc(S.mark)}" placeholder="e.g. 85">
-  <label for="tn">Note / follow-up question for a short in-class discussion</label>
-  <textarea id="tn">${esc(S.teacherNote)}</textarea>
+  <div class="checks"><label><input type="checkbox" id="conf" ${S.confirmed?"checked":""}> I had a short conversation with the student to confirm understanding (optional)</label></div>
+  <label for="tn">Note / follow-up question</label><textarea id="tn">${esc(S.teacherNote)}</textarea>
   <p class="muted">Not collected: keystrokes, camera, or any "percentage of AI authorship".</p></div>`;
 }
+function vStatus(){
+  return `${lensBox("status")}<div class="card"><h2>What is real and what is simulated</h2>
+  <p class="muted">Features that are proposed but not operational are marked. Nothing here is a working AI system.</p>
+  <table><thead><tr><th>Feature</th><th>Status</th><th>Note</th></tr></thead><tbody>
+  ${STATUS.map(r=>`<tr><td>${esc(r[0])}</td><td><span class="chip ${r[1]}">${CH[r[1]]}</span></td><td>${esc(r[2])}</td></tr>`).join("")}</tbody></table></div>`;
+}
+function vRisks(){
+  const res=S.qres;
+  return `${lensBox("risks")}<div class="card"><h2>Risks and limits: how the design responds</h2>
+  <div class="risk"><h3>1. The AI invents a quote (hallucination)</h3>
+   <p>Rule: a comment is shown only if its quote exists in the student's text. Try it (this check really runs):</p>
+   <label for="qt">A quote the AI claims the student wrote</label><input type="text" id="qt" value="${esc(S.qtest)}">
+   <div class="row"><button class="p" id="qcheck">Check against the student's text</button><button class="s" id="qreal">Use a real quote</button></div>
+   ${res===null?"":res?`<div class="ok"><span class="chip ok">found</span> The comment would be shown.</div>`:`<div class="ok" style="background:var(--redbg);border-color:var(--red)"><span class="chip bad">not found</span> The comment is withheld and the teacher is notified.</div>`}
+   <p class="muted">Limit: this catches invented quotes only. A real quote can still get a wrong interpretation, which is why students can dispute and teachers review.</p></div>
+  <div class="risk"><h3>2. The AI comment is wrong or generic</h3><p>Response: comments are marked preliminary; students can dispute them; unresolved cases go to the teacher. In the pilot we count the share of wrong or unhelpful comments.</p></div>
+  <div class="risk"><h3>3. Language bias</h3><p>Response: no detector scores; language accuracy is assessed separately from reasoning when the task says so; Kazakh and Russian quality must be tested with users, not assumed.</p></div>
+  <div class="risk"><h3>4. The student uses another tool for the transfer task</h3><p>Response: the app cannot prevent it. For important marks the teacher adds a short conversation. The activity is low-stakes and formative.</p></div>
+  <div class="risk"><h3>5. Privacy when text goes to an external AI service</h3><p>Response: only institution-approved services, minimal data, the student is told before any text is sent. A local database alone does not keep data local.</p></div>
+  <div class="risk"><h3>6. Over-reliance on the AI</h3><p>Response: the AI asks, it does not write; the student explains and revises alone; the transfer task has no help.</p></div></div>`;
+}
+function vEval(){
+  return `${lensBox("eval")}<div class="card"><h2>Evaluation plan (proposed, not yet carried out)</h2>
+  <p class="muted">Small pilot: one course, one skill, about 20 to 30 students if approval and recruitment allow. It gives preliminary observations, not proof of effectiveness.</p>
+  <div class="cols"><div class="ver"><b>Group A</b><p>Teacher-prepared written comments on the criteria.</p></div><div class="ver"><b>Group B</b><p>AssessWise dialogue.</p></div></div>
+  <p>Same task, criteria and time. Both groups revise, then do a new transfer task with no help. Optional delayed task to check retention.</p>
+  <table><thead><tr><th>Question</th><th>Measure</th><th>Result</th></tr></thead><tbody>
+  <tr><td>Can students transfer the skill?</td><td>Blind-marked transfer task, one rubric, anonymised</td><td><span class="muted">to be collected</span></td></tr>
+  <tr><td>Can they explain why they changed the text?</td><td>Quality of explanations of revisions</td><td><span class="muted">to be collected</span></td></tr>
+  <tr><td>Can they spot wrong AI advice?</td><td>Deliberately flawed comments inserted; share challenged</td><td><span class="muted">to be collected</span></td></tr>
+  <tr><td>How good are the AI comments?</td><td>Share of wrong or unhelpful comments, reviewed by teachers</td><td><span class="muted">to be collected</span></td></tr>
+  <tr><td>Is it practical?</td><td>Teacher time per student; short interviews</td><td><span class="muted">to be collected</span></td></tr>
+  <tr><td>Is it fair and accessible?</td><td>Barriers reported; results by language group (if numbers allow)</td><td><span class="muted">to be collected</span></td></tr></tbody></table>
+  <h3>Threats to validity we will report</h3><p>Small sample, baseline differences, missing responses, use of other tools, improvement in the draft not proving independent learning.</p>
+  <h3>Success looks like</h3><p>Better transfer-task results, students who catch wrong AI advice, and no extra teacher time. These are hypotheses.</p></div>`;
+}
+const WEEKS = [
+ ["Week 3: Learning theories, constructive alignment","Same criteria across task, dialogue, revision and transfer; student constructs understanding"],
+ ["Week 5: Ethics and responsibility","Teacher owns the mark and AI rules; no detector, no surveillance; right to dispute"],
+ ["Week 6: Formative and summative assessment","Feedback before revision; self-assessment; AI never grades; validity, fairness, transparency"],
+ ["Week 7: Active, student-centred learning; didactic triangle","Student explains and revises; AI supports the encounter with content; teacher selects worthwhile questions"],
+ ["Week 8: Inclusive pedagogy, UDL","Graduated help, flexible response, accessibility options; languages and assistive features proposed, not yet tested"],
+ ["Week 9: Technology, TPACK, Padagogy Wheel","AI used only where it serves the pedagogy: questioning, higher-order thinking (evaluate, create)"],
+ ["Week 10: Rethinking higher education, our poster feedback","Focus on lifelong learning skills: reasoning and judgement rather than polished output"]
+];
+function vReflect(){
+  return `${lensBox("reflect")}<div class="card"><h2>Reflection: course learning and peer feedback</h2>
+  <h3>How the course shaped the design</h3>
+  <table><thead><tr><th>Course element</th><th>Design decision</th></tr></thead><tbody>${WEEKS.map(w=>`<tr><td>${esc(w[0])}</td><td>${esc(w[1])}</td></tr>`).join("")}</tbody></table>
+  <h3>Peer and instructor feedback and what we changed</h3>
+  <p class="muted">Fill in real feedback only. Your entries are saved in this browser.</p>
+  ${S.reflect.rows.map((r,i)=>`<div class="cols"><div><label for="fb${i}">Feedback ${i+1}</label><textarea id="fb${i}">${esc(r.fb)}</textarea></div><div><label for="ch${i}">What we changed and why</label><textarea id="ch${i}">${esc(r.ch)}</textarea></div></div>`).join("")}
+  <h3>What building this showed us about teaching, learning, assessment and feedback</h3>
+  <label for="l1">Teaching and learning</label><textarea id="l1">${esc(S.reflect.learn1)}</textarea>
+  <label for="l2">Assessment and feedback</label><textarea id="l2">${esc(S.reflect.learn2)}</textarea></div>`;
+}
+function vEthics(){
+  return `${lensBox("ethics")}<div class="ethics" role="region" aria-label="Ethics and data" style="margin-top:0"><h2 style="margin-top:0">Ethics and data</h2><ul>
+  <li><b>Transparency:</b> every comment shows the criterion, the quoted fragment (checked against the text) and the reason. AI comments are marked <span class="prelim">preliminary</span>.</li>
+  <li><b>Right to disagree:</b> any comment can be disputed and sent to the teacher, without penalty.</li>
+  <li><b>Minimal data:</b> this demo uses an invented text; no names or student ID numbers. If text were sent to an external AI service, the student would be told first, and only institution-approved services would be used. Local storage alone does not guarantee that data stay local.</li>
+  <li><b>No hidden surveillance:</b> no keystroke logging, camera or "authorship percentage". The AI-use declaration helps discuss rules; it is not proof of authorship.</li>
+  <li><b>Help is not penalised:</b> using hints does not lower the mark.</li>
+  <li><b>Fairness:</b> no AI-detector scores; language accuracy can be assessed separately from reasoning; students who do not use AI get an equivalent teacher-supported activity.</li>
+  <li><b>Accessibility:</b> full keyboard use, text size and high-contrast switches (top bar), no timers for students. Kazakh and Russian support are proposed, not tested.</li></ul></div>`;
+}
 
+/* ---------- Render and wiring ---------- */
 function render(){
   nav();
-  const m = $("#main");
-  m.innerHTML = (S.showEthics?ethics():"") + (S.view==="teacher"?teacher():[s0,s1,s2,s3,s4][S.step]());
+  document.body.classList.toggle("hc",S.hc);
+  document.documentElement.style.setProperty("--z",S.zoom);
+  $("#hcb").setAttribute("aria-pressed",S.hc); $("#lensb").setAttribute("aria-pressed",S.lens);  const V={setup:vSetup,teacher:vTeacher,status:vStatus,risks:vRisks,eval:vEval,reflect:vReflect,ethics:vEthics};
+  $("#main").innerHTML = S.view==="student"?[vS0,vS1,vS2,vS3,vS4][S.step]():V[S.view]();
   wire();
 }
 function wire(){
-  const g = id=>document.getElementById(id);
-  if(S.view==="teacher"){
-    g("mk").oninput=e=>S.mark=e.target.value; g("tn").oninput=e=>S.teacherNote=e.target.value; return;
+  const g=id=>document.getElementById(id);
+  const v=S.view;
+  if(v==="setup"){
+    g("st").oninput=e=>S.setup.task=e.target.value;
+    S.setup.crit.forEach((c,i)=>g("sc"+i).oninput=e=>S.setup.crit[i]=e.target.value);
+    ["explain","question","generate","rewrite"].forEach(k=>g("a_"+k).onchange=e=>S.setup.ai[k]=e.target.checked);
+    g("a_lang").onchange=e=>S.setup.langSeparate=e.target.checked;
+    g("go").onclick=()=>go("student",0);
   }
+  if(v==="teacher"){ g("mk").oninput=e=>S.mark=e.target.value; g("tn").oninput=e=>S.teacherNote=e.target.value; g("conf").onchange=e=>S.confirmed=e.target.checked; }
+  if(v==="risks"){
+    g("qt").oninput=e=>S.qtest=e.target.value;
+    g("qcheck").onclick=()=>{S.qres=quoteOk(S.qtest);render();g("qcheck")&&g("qcheck").focus()};
+    g("qreal").onclick=()=>{S.qtest="So online learning is more effective.";S.qres=quoteOk(S.qtest);render()};
+  }
+  if(v==="reflect"){
+    S.reflect.rows.forEach((r,i)=>{g("fb"+i).oninput=e=>{r.fb=e.target.value;saveReflect()};g("ch"+i).oninput=e=>{r.ch=e.target.value;saveReflect()}});
+    g("l1").oninput=e=>{S.reflect.learn1=e.target.value;saveReflect()}; g("l2").oninput=e=>{S.reflect.learn2=e.target.value;saveReflect()};
+  }
+  if(v!=="student")return;
   if(S.step===0){
     g("draft").oninput=e=>S.draft=e.target.value;
     g("ai").onchange=e=>S.aiUsed=e.target.value; g("ainote").oninput=e=>S.aiNote=e.target.value;
     ["claim","evid","alt"].forEach(k=>g("sa_"+k).onchange=e=>S.self[k]=e.target.value);
-    g("go0").onclick=()=>{S.step=1;render()};
+    g("go0").onclick=()=>go("student",1);
   }
   if(S.step===1){
     g("ex").oninput=e=>S.explain=e.target.value;
     g("go1").onclick=()=>{if(!S.explain.trim())S.explain="Because the grades went up after the change, so the change must be the reason.";
-      if(!S.dlg.length)S.dlg.push({r:"ai",t:SCRIPT[0].ai});S.step=2;render()};
+      if(!S.dlg.length)S.dlg.push({r:"ai",sc:SCRIPT[0]});go("student",2)};
   }
   if(S.step===2){
     const done=S.dlgStage>=SCRIPT.length;
@@ -234,30 +433,34 @@ function wire(){
       g("hint").onclick=()=>{g("helpbox").innerHTML=`<div class="ok"><b>Hint:</b> ${esc(SCRIPT[S.dlgStage].hint||"No hint needed.")}</div>`};
       g("exm").onclick=()=>{g("helpbox").innerHTML=`<div class="ok"><b>Worked example:</b> ${esc(SCRIPT[S.dlgStage].ex||"No example needed.")}</div>`};
       g("sample").onclick=()=>{g("reply").value=USER_TURNS[S.dlgStage]};
-      g("send").onclick=()=>{const v=g("reply").value.trim()||USER_TURNS[S.dlgStage];
-        S.dlg.push({r:"me",t:v});S.dlgStage++;
-        S.dlg.push({r:"ai",t:SCRIPT[S.dlgStage].ai});
-        if(S.dlgStage===SCRIPT.length-1)S.dlgStage=SCRIPT.length; render()};
+      g("send").onclick=()=>{const t=g("reply").value.trim()||USER_TURNS[S.dlgStage];
+        S.dlg.push({r:"me",t});S.dlgStage++;S.dlg.push({r:"ai",sc:SCRIPT[S.dlgStage]});
+        if(S.dlgStage===SCRIPT.length-1)S.dlgStage=SCRIPT.length;render()};
     }
     g("dis").onclick=()=>{S.disagreeOpen=!S.disagreeOpen;render()};
-    if(S.disagreeOpen)g("dsend").onclick=()=>{const t=g("dtext").value.trim()||"The comment says I have no evidence. But my second paragraph cites the group's average grades, which support my claim because they show a change over time.";
+    if(S.disagreeOpen)g("dsend").onclick=()=>{const t=g("dtext").value.trim()||"The comment says I have no evidence. But my text cites the group's average grades, which support my claim because they show a change over time.";
       S.disagreements.push({t,resolved:S.disagreements.length%2===0});S.disagreeOpen=false;render()};
-    g("go2").onclick=()=>{S.step=3;render()};
+    g("go2").onclick=()=>go("student",3);
   }
   if(S.step===3){
     g("rev").oninput=e=>S.revised=e.target.value; g("why").oninput=e=>S.why=e.target.value;
     g("sampleRev").onclick=()=>{S.revised="After the move online, the group's average grade rose. This is consistent with online learning helping, but other factors, such as a different exam, could also explain it. I would need to compare exam difficulty and a group that did not change format.";
       S.why="My first version was too certain. I treated a correlation as proof and did not rule out other explanations.";render()};
-    g("compare").onclick=()=>{g("cmp").innerHTML=`<div class="fb"><span class="prelim">preliminary AI comparison</span><dt>Change detected</dt><dd>"So online learning is more effective" became a cautious claim with alternative explanations.</dd><dt>Linked criteria</dt><dd>B. Justified conclusion: improved. C. Alternative explanation: now present.</dd><dt>For you to judge</dt><dd>Does the new version fully answer your own question about the exam?</dd></div>`};
-    g("go3").onclick=()=>{S.step=4;render()};
+    g("compare").onclick=()=>{g("cmp").innerHTML=`<div class="fb"><span class="prelim">preliminary AI comparison (scripted)</span><dt>Change detected</dt><dd>"So online learning is more effective" became a cautious claim with alternative explanations.</dd><dt>Linked criteria</dt><dd>B. Justified conclusion: improved. C. Alternative explanation: now present.</dd><dt>For you to judge</dt><dd>Does the new version fully answer your own question about the exam?</dd></div>`};
+    g("go3").onclick=()=>go("student",4);
   }
   if(S.step===4){
     g("tr").oninput=e=>S.transfer=e.target.value;
     g("sampleTr").onclick=()=>{S.transfer="Not necessarily. Students who attend consultations may be more motivated, so motivation could explain the higher grades. To test it I would compare similar students with and without consultations.";render()};
     g("save").onclick=()=>{g("saved").innerHTML=`<div class="ok">Saved. Your teacher can now see your first attempt, explanation, revision and this independent answer. <button class="s" id="tv">Open teacher view</button></div>`;
-      g("tv").onclick=()=>{S.view="teacher";render()}};
+      g("tv").onclick=()=>go("teacher")};
   }
 }
+/* toolbar */
+$("#fsm").onclick=()=>{S.zoom=Math.max(.85,+(S.zoom-.1).toFixed(2));render()};
+$("#fsp").onclick=()=>{S.zoom=Math.min(1.5,+(S.zoom+.1).toFixed(2));render()};
+$("#hcb").onclick=()=>{S.hc=!S.hc;render()};
+$("#lensb").onclick=()=>{S.lens=!S.lens;render()};
 render();
 </script>
 </body>
